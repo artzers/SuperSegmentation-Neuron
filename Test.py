@@ -51,7 +51,7 @@ for k in range(minLowRange[2], maxLowRange[2] - (readRange[2] - 1), readRange[2]
     xMaxLowList.append(k+readRange[2])
 
 pretrained_net = SuperSeg()
-pretrained_net.load_state_dict(torch.load('./saved_models/ZHM_19500.pth',map_location='cuda:0'))
+pretrained_net.load_state_dict(torch.load('./saved_models/supernet.pth',map_location='cuda:0'))
 pretrained_net = pretrained_net.cuda(0)
 pretrained_net.eval()
 torch.set_grad_enabled(False)
