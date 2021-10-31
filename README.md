@@ -17,7 +17,9 @@ Other python packages:
 ### Training
 1. Put the original images into "original" directory and binary images into "bin" directory.
 2. Open "main.py" and turn to line 79. Change the 1st and 2nd parameters of DataPackage. The 1st parameter is the directory of original directory. The 2nd parameter is the directory of bin directory.
-3. Run main.py
+3. Open python command line and run command "python -m visdom.server".
+4. Open the internet explorer software and enter "http://localhost:8097/", the detail information of training phase will be plotted here.
+5. Run main.py
 
 ### Test
 Open test.py. Turn to line 8, change the path of test images. Then turn to line 12 and change the mean and std values. Run test.py.
