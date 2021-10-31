@@ -71,13 +71,13 @@ globalDev = 'cuda:0'
 globalDeviceID = 0
 
 if __name__ == '__main__':
-    # lowMean,lowStd = CalcMeanStd("D:\Document\SuperSeg/fig4\zhm_sample/new\orig/")
-    # print(lowMean, lowStd)
+    lowMean,lowStd = CalcMeanStd("D:\Document\SuperSeg/fig4\zhm_sample/new\orig/")
+    print(lowMean, lowStd)
     # exit(0)
 
     dataList = []
-    dataList.append( DataPackage('D:\Document\SuperSeg/fig4\zhm_sample/new\orig',
-                        'D:\Document\SuperSeg/fig4\zhm_sample/new/bin',35,50, 1.0) )
+    dataList.append( DataPackage('D:\Document/fig/orig/',
+                        'D:\Document/fig/bin',lowMean,lowStd, 1.0) )
 
     train_dataset = GetMultiTypeMemoryDataSetAndCrop(dataList, [16, 24, 24], 500)
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True,num_workers=0)
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
     Net.logger = logger
 
-    trainer = Net.TrainerDualWGANGP(data_loader=train_loader, test_loader=None)
+    trainer = Net.Trainer(data_loader=train_loader, test_loader=None)
 
     time_start = time.time()
     trainer.Train(turn=50)
