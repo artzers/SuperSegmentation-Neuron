@@ -8,7 +8,7 @@ from Util import RestoreNetImg, SoftDiceLoss, BCEFocalLoss
 
 logger = None
 
-class TrainerDualWGANGP:
+class Trainer:
     def __init__(self,
                  data_loader,
                  test_loader,
