@@ -7,6 +7,7 @@ Other python packages:
 - tqdm
 - tifffile
 - visdom
+- scanf
 
 ### Prepare
 1. Use Other neurite tracing tools such like NeuroGPS-Tree(https://github.com/GTreeSoftware/GTree), Vaa3d(https://github.com/Vaa3D) to trace the neurites. The traced neurites are saved in SWC files. The swc files from the same neuron are saved into one directory.
