@@ -26,29 +26,29 @@ yMaxLowList = []
 xMinLowList = []
 xMaxLowList = []
 
-# for k in range(minLowRange[0], maxLowRange[0] - 15, 16):
-#     zMinLowList.append(k)
-#     zMaxLowList.append(k+16)
-#
-# for k in range(minLowRange[1], maxLowRange[1] - 31,16):
-#     yMinLowList.append(k)
-#     yMaxLowList.append(k+32)#59
-#
-# for k in range(minLowRange[2], maxLowRange[2] - 31, 16):
-#     xMinLowList.append(k)
-#     xMaxLowList.append(k+32)
-
-for k in range(minLowRange[0], maxLowRange[0] - (readRange[0] - 1), readRange[0]): #TODO:
+for k in range(minLowRange[0], maxLowRange[0] - 31, 16):
     zMinLowList.append(k)
-    zMaxLowList.append(k+readRange[0])
+    zMaxLowList.append(k+32)
 
-for k in range(minLowRange[1], maxLowRange[1] - (readRange[1] - 1), readRange[1]):
+for k in range(minLowRange[1], maxLowRange[1] - 31,16):
     yMinLowList.append(k)
-    yMaxLowList.append(k+readRange[1])#59
+    yMaxLowList.append(k+32)#59
 
-for k in range(minLowRange[2], maxLowRange[2] - (readRange[2] - 1), readRange[2]):
+for k in range(minLowRange[2], maxLowRange[2] - 31, 16):
     xMinLowList.append(k)
-    xMaxLowList.append(k+readRange[2])
+    xMaxLowList.append(k+32)
+
+# for k in range(minLowRange[0], maxLowRange[0] - (readRange[0] - 1), readRange[0]): #TODO:
+#     zMinLowList.append(k)
+#     zMaxLowList.append(k+readRange[0])
+
+# for k in range(minLowRange[1], maxLowRange[1] - (readRange[1] - 1), readRange[1]):
+#     yMinLowList.append(k)
+#     yMaxLowList.append(k+readRange[1])#59
+
+# for k in range(minLowRange[2], maxLowRange[2] - (readRange[2] - 1), readRange[2]):
+#     xMinLowList.append(k)
+#     xMaxLowList.append(k+readRange[2])
 
 pretrained_net = SuperSeg()
 pretrained_net.load_state_dict(torch.load('./saved_models/supernet.pth',map_location='cuda:0'))
