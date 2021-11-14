@@ -65,9 +65,7 @@ class Trainer:
                     seg_A = self.super_net(lrImg)
 
                     preciseFocalLoss = 50*self.focalLoss(seg_A, binImg)
-                    # preciseBCELoss = self.precise_bce_loss(seg_A,binImg)
                     preciseDiceLoss = self.precise_dice_loss(seg_A,binImg)
-                    # seg_loss = preciseDiceLoss + preciseBCELoss+preciseFocalLoss
                     seg_loss = preciseDiceLoss + preciseFocalLoss
                     seg_loss.backward()
                     self.optimizer_G.step()
