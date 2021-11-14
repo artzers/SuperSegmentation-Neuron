@@ -3,7 +3,6 @@ import numpy as np
 from scanf import scanf
 from tqdm import tqdm
 from scipy.ndimage import zoom
-from Predict_10Data import HuangPredict
 import shutil
 
 srcPath = 'D:/Document/SuperSeg/fig/'
