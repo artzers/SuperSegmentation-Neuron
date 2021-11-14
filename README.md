@@ -1,6 +1,6 @@
 # SuperSegmentation-Neuron
 
-### Requirement
+### 1.Requirement
 Our Training and Test environment is Python3.7.3, Pytorch 1.5.1+Cuda 9.2. 
 Other python packages:
 - Numpy
@@ -9,17 +9,22 @@ Other python packages:
 - visdom
 - scanf
 
-### Prepare
-1. Use Other neurite tracing tools such like NeuroGPS-Tree(https://github.com/GTreeSoftware/GTree), Vaa3d(https://github.com/Vaa3D) to trace the neurites. The traced neurites are saved in SWC files. The swc files from the same neuron are saved into one directory.
-2. Edit MergeSwc.py. Change the srcPath and the path of dirList to your real data path. Run  MergeSwc.py to generate the %_allSwc.swc.
-3. Edit the SampleMaker.py. Change the srcPath and the path of dirList to your real data path. Run SampleMaker.py to generate the binary image as the gold truth.
+### 2.Prepare
+(1) Use neurite tracing tools such like NeuroGPS-Tree (https://github.com/GTreeSoftware/GTree), Vaa3d(https://github.com/Vaa3D) to trace the neurites. The traced neurites are saved in SWC files. The SWC files from the same neuron should be saved in one directory, which is named using the image name. Each original image is also put into the corresponding directory.
+(2) Edit MergeSwc.py. Change the parameter “srcPath” to the root path of SWC directories. Then run MergeSwc.py. All of the SWC files in the same directory will be merged as one SWC file, which is named as “XXX_allSwc.swc”.
+(3) Edit the SampleMaker.py. Change the parameter “srcPath” to the root path of SWC directories. Run SampleMaker.py. These python codes will read the original image and  “XXX_allSwc.swc” in each directory, and then generate the segmented image of high resolution as the ground truth in the current directory.
 
-### Training
-1. Put the original images into "original" directory and binary images into "bin" directory.
-2. Open "main.py" and turn to line 79. Change the 1st and 2nd parameters of DataPackage. The 1st parameter is the directory of original directory. The 2nd parameter is the directory of bin directory.
-3. Open python command line and run command "python -m visdom.server".
-4. Open the internet explorer software and enter "http://localhost:8097/", the detail information of training phase will be plotted here.
-5. Run main.py
 
-### Test
-Open test.py. Turn to line 8, change the path of test images. Then turn to line 12 and change the mean and std values. Run test.py.
+### 3.Training
+(1) Build new directories named “original” and “bin”. 
+(2) Put all of the original images into "original" directory and ground truth images into "bin" directory.
+(3) Edit "main.py". Change the parameter “lrPath” to the absolute path of “original” directory. Change the parameter “hrPath” to the absolute path of “bin” directory.
+(4) Open python command line and run command "python -m visdom.server".
+(4) Open the internet explorer software and enter http://localhost:8097/. The detail information of training phase will be plotted here.
+(5) Run main.py and the training work start. 
+
+### 4.Test
+(1) Edit test.py. Turn to line 8, change the parameter “root” to the absolute path of directory including test images.
+(2) Turn to line 12 and change the mean and standard variance values of the test images. 
+(3) Run test.py. 
+
