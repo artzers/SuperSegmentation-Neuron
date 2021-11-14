@@ -10,7 +10,7 @@ Other python packages:
 - scanf
 
 ### 2.Prepare
-(1) Use neurite tracing tools such like NeuroGPS-Tree (https://github.com/GTreeSoftware/GTree), Vaa3d(https://github.com/Vaa3D) to trace the neurites. The traced neurites are saved in SWC files. The SWC files from the same neuron should be saved in one directory, which is named using the image name. Each original image is also put into the corresponding directory.
+(1) Use neurite tracing tools such like NeuroGPS-Tree (https://github.com/GTreeSoftware/GTree), Vaa3d(https://github.com/Vaa3D) to trace the neurites. The traced neurites are saved in SWC files. The SWC files from the same neuron should be saved in one directory. Use the image name to name the corresponding directory. Each original image is also put into the corresponding directory.
 (2) Edit MergeSwc.py. Change the parameter “srcPath” to the root path of SWC directories. Then run MergeSwc.py. All of the SWC files in the same directory will be merged as one SWC file, which is named as “XXX_allSwc.swc”.
 (3) Edit the SampleMaker.py. Change the parameter “srcPath” to the root path of SWC directories. Run SampleMaker.py. These python codes will read the original image and  “XXX_allSwc.swc” in each directory, and then generate the segmented image of high resolution as the ground truth in the current directory.
 
