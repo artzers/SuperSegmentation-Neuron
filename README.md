@@ -24,7 +24,8 @@ Other python packages:
 (5) Run main.py and the training work start. 
 
 ### 4.Test
-(1) Edit test.py. Turn to line 8, change the parameter “root” to the absolute path of directory including test images.
-(2) Turn to line 12 and change the mean and standard variance values of the test images. 
-(3) Run test.py. 
+(1) Open test.py. 
+(2) Change the parameter “root” to the absolute path of directory including test images.
+(3) Change the parameter “lowMeanVal” and “lowStdVal” to the mean and standard variance values of the test images. 
+(4) Run test.py. 
 
