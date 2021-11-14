@@ -232,151 +232,6 @@ class PixelUpsampler3D(nn.Module):
         up = self._pixel_shuffle(x, self.scaleFactor)
         return up
 
-class GetMemoryDataSetAndCrop:
-    def __init__(self, lrDir, hrDir,lineDir, cropSize, epoch):
-        self.lrDir = lrDir
-        #self.midDir = midDir
-        self.hrDir = hrDir
-        self.lineDir = lineDir
-
-        self.epoch = epoch
-
-        self.lrFileList = []
-        #self.midFileList = []
-        self.hrFileList = []
-        #self.lineFileList = []
-
-        self.lrImgList = []
-        #self.midImgList = []
-        self.hrImgList = []
-        self.lineImgList = []
-
-        self.beg = [0, 0, 0]
-        self.cropSz = cropSize
-
-        for file in os.listdir(self.lrDir):
-            if file.endswith('.tif'):
-                self.lrFileList.append(file)
-
-        # for file in os.listdir(self.midDir):
-        #     if file.endswith('.tif'):
-        #         self.midFileList.append(file)
-
-        for file in os.listdir(self.hrDir):
-            if file.endswith('.tif'):
-                self.hrFileList.append(file)
-
-        self.crossPlace = []
-        for file in os.listdir(self.lineDir):
-            if file.endswith('.swc'):
-                self.crossPlace.append(np.loadtxt(os.path.join(self.lineDir,file)))
-
-        if len(self.lrFileList) != len(self.hrFileList):
-            self.check = False
-
-        for name in tqdm(self.lrFileList):
-            lrName = os.path.join(self.lrDir,name)
-            #midName = os.path.join(self.midDir, name)
-            hrName = os.path.join(self.hrDir, name)
-            #lineName = os.path.join(self.lineDir, name)
-            lrImg = tifffile.imread(lrName)
-            #midImg = tifffile.imread(midName)
-            hrImg = tifffile.imread(hrName)
-            #lineImg = tifffile.imread(lineName)
-
-            lrImg = np.expand_dims(lrImg, axis=0)
-            #midImg = np.expand_dims(midImg, axis=0)
-            hrImg = np.expand_dims(hrImg, axis=0)
-            #lineImg = np.expand_dims(lineImg, axis=0)
-
-            #lrImg = lrImg.astype(np.float)
-            #midImg = midImg.astype(np.float)
-            #hrImg = hrImg.astype(np.float)
-
-            #midImg = midImg / 255
-            #hrImg = hrImg / 255
-
-            self.lrImgList.append(lrImg)
-            #self.midImgList.append(midImg)
-            self.hrImgList.append(hrImg)
-            #self.lineImgList.append(lineImg)
-
-    def Check(self):
-        return self.check
-
-    def DataNum(self):
-        return len(self.hrFileList)
-
-    def __len__(self):
-        return self.epoch#len(self.hrFileList)
-
-    def len(self):
-        return self.epoch#len(self.hrFileList)
-
-    def __getitem__(self, ind):
-        flag = True
-        while flag:
-            ind = np.random.randint(len(self.hrFileList),len(self.hrFileList)+len(self.crossPlace))
-            #ind = np.random.randint(44, len(self.hrFileList))
-            if ind < len(self.hrFileList):
-                # if ind > 2 and ind < len(self.hrFileList)+8:
-                #     ind = 3
-                sz = self.lrImgList[ind].shape
-                self.beg[0] = np.random.randint(0, sz[1] - self.cropSz[0] - 1)
-                self.beg[1] = np.random.randint(0, sz[2] - self.cropSz[1] - 1)
-                self.beg[2] = np.random.randint(0, sz[3] - self.cropSz[2] - 1)
-
-            else:
-                if ind < len(self.hrFileList)+len(self.crossPlace):
-                    curInd = ind-len(self.hrFileList)
-                else:
-                    curInd = len(self.hrFileList)-1
-                ind = curInd
-                sz = self.lrImgList[curInd].shape
-                placeInd = np.random.randint(0,len(self.crossPlace[curInd]))
-                curPlace = (np.round(self.crossPlace[curInd][placeInd])).astype(np.int)
-                xMin = np.minimum(np.maximum(0, curPlace[2]-12),sz[3] - self.cropSz[2] - 3)
-                xMax = np.maximum(np.minimum(sz[3] - self.cropSz[2] - 1, curPlace[2] - 5),1)
-                yMin = np.minimum(np.maximum(0, curPlace[3]-12),sz[2] - self.cropSz[1] - 3)
-                yMax = np.maximum(np.minimum(sz[2] - self.cropSz[1] - 1, curPlace[3] - 5),1)
-                zMin = np.minimum(np.maximum(0, curPlace[4]-8),sz[1] - self.cropSz[0] - 3)
-                zMax = np.maximum(np.minimum(sz[1] - self.cropSz[0] - 1, curPlace[4] - 3),1)
-                self.beg[0] = np.random.randint(zMin, zMax)
-                self.beg[1] = np.random.randint(yMin, yMax)
-                self.beg[2] = np.random.randint(xMin, xMax)
-
-            hrImg = self.hrImgList[ind][:, self.beg[0] * 4:self.beg[0] * 4 + self.cropSz[0] * 4,
-                    self.beg[1] * 2:self.beg[1] * 2 + self.cropSz[1] * 2,
-                    self.beg[2] * 2:self.beg[2] * 2 + self.cropSz[2] * 2]
-
-            if np.sum(hrImg) < 5100:
-                pass
-            else:
-                lrImg = self.lrImgList[ind][:, self.beg[0]:self.beg[0] + self.cropSz[0],
-                        self.beg[1]:self.beg[1] + self.cropSz[1],
-                        self.beg[2]:self.beg[2] + self.cropSz[2]]
-                flag = False
-
-
-        rid = np.random.randint(0,6)
-        if rid == 0:
-            pass#return lrImg, midImg, hrImg
-        if rid == 1:
-            lrImg,hrImg = lrImg[:,::-1,:,:], hrImg[:,::-1,:,:]
-        if rid == 2:
-            lrImg,hrImg =  lrImg[:,:,::-1,:], hrImg[:,:,::-1,:]
-        if rid == 3:
-            lrImg,hrImg =  lrImg[:,:,:,::-1], hrImg[:,:,:,::-1]
-        if rid == 4:
-            lrImg,hrImg = lrImg[:,::-1,::-1,:],  hrImg[:,::-1,::-1,:]
-        if rid == 5:
-            lrImg,hrImg =  lrImg[:,:,::-1,::-1], hrImg[:,:,::-1,::-1]
-
-        lrImg = torch.from_numpy(lrImg.copy().astype(np.float)).float()
-        hrImg = torch.from_numpy(hrImg.copy().astype(np.float)).float()
-        hrImg = hrImg / 255
-        return lrImg,  hrImg
-
 
 class GetMultiTypeMemoryDataSetAndCrop:
     def __init__(self, dataList, cropSize, epoch):
@@ -405,12 +260,12 @@ class GetMultiTypeMemoryDataSetAndCrop:
                     lrFileList.append(file)
 
             for file in os.listdir(hrDir):
-                if file.endswith('.tif'):
+                if file.endswith('bin.tif'):
                     hrFileList.append(file)
 
-            for name in tqdm(lrFileList):
-                lrName = os.path.join(lrDir,name)
-                hrName = os.path.join(hrDir, name)
+            for ind in tqdm(range(len(lrFileList))):
+                lrName = os.path.join(lrDir,lrFileList[ind])
+                hrName = os.path.join(hrDir, hrFileList[ind])
                 lrImg = tifffile.imread(lrName)
                 hrImg = tifffile.imread(hrName)
 
