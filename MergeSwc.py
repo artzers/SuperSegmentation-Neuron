@@ -8,15 +8,15 @@ import shutil
 
 srcPath = 'D:/Document/SuperSeg/fig/'
 root = srcPath
-dirList = os.listdir('D:/Document/SuperSeg/fig-swc/')
+dirList = os.listdir(srcPath)
 
 for name in tqdm(dirList):
     dirPath = os.path.join(root, name)
     fileList = os.listdir(dirPath)
+    tifname = name
     # if os.path.exists(os.path.join(dirPath,name[:-4]+'_allSwc.swc')):
     #     os.remove(os.path.join(dirPath,name[:-4]+'_allSwc.swc'))
     allCurve = []
-    tifname = name
     for file in fileList:
         if file[-3:] != 'swc' or file[-10:] == 'shapes.swc':
             continue
