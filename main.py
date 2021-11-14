@@ -42,42 +42,20 @@ def CalcMeanStd(path):
     print(globalStd)
     return globalMean,globalStd
 
-
-def CalcMeanMax(path):
-    srcPath = path
-    fileList = os.listdir(srcPath)
-    fileNum = len(fileList)
-
-    maxVal = 0
-    for name in tqdm(fileList):
-        img = tifffile.imread(os.path.join(srcPath, name))
-        maxVal = np.maximum(maxVal, np.max(img))
-
-    print(maxVal)
-
-    globalMean = 0
-    globalStd = 0
-
-    for name in tqdm(fileList):
-        img = tifffile.imread(os.path.join(srcPath, name))
-        mean = np.mean(img)
-        globalMean += mean
-    globalMean /= fileNum
-    print(globalMean)
-    return globalMean,maxVal
-
 env = 'SuperSeg'
 globalDev = 'cuda:0'
 globalDeviceID = 0
 
 if __name__ == '__main__':
-    lowMean,lowStd = CalcMeanStd("D:\Document\SuperSeg/fig4\zhm_sample/new\orig/")
+    lrPath = "D:/Document/SuperSeg/orig/"
+    hrPath = "D:/Document/SuperSeg/bin/"
+    lowMean,lowStd = CalcMeanStd(lrPath)
     print(lowMean, lowStd)
     # exit(0)
 
     dataList = []
-    dataList.append( DataPackage('D:\Document/fig/orig/',
-                        'D:\Document/fig/bin',lowMean,lowStd, 1.0) )
+    dataList.append( DataPackage(lrPath,
+                        hrPath,lowMean,lowStd, 1.0) )
 
     train_dataset = GetMultiTypeMemoryDataSetAndCrop(dataList, [16, 24, 24], 500)
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True,num_workers=0)
