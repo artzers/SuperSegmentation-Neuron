@@ -22,8 +22,6 @@ class Trainer:
         # Loss function
         self.focalLoss = BCEFocalLoss(gamma=2,alpha=0.7)
         self.focalLoss = self.focalLoss.cuda(self.cudaid)
-        # self.precise_bce_loss = nn.BCELoss()
-        # self.precise_bce_loss = self.precise_bce_loss.cuda(self.cudaid)
 
         self.precise_dice_loss = SoftDiceLoss()
         self.precise_dice_loss = self.precise_dice_loss.cuda(self.cudaid)
@@ -35,7 +33,7 @@ class Trainer:
 
         # Initialize generator and discriminator
         self.super_net = SuperSeg()
-        self.super_net.load_state_dict(torch.load('./saved_models/supernet_700.pth', map_location='cuda:0'))
+        #self.super_net.load_state_dict(torch.load('./saved_models/supernet_700.pth', map_location='cuda:0'))
         self.super_net.cuda(self.cudaid)
 
         # Optimizers
