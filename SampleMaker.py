@@ -7,7 +7,7 @@ import shutil
 
 srcPath = 'D:\Document\SuperSeg/fig/'
 root = srcPath
-dirList = os.listdir('D:\Document\SuperSeg/fig-swc/')
+dirList = os.listdir(srcPath)
 
 for name in tqdm(dirList):
     curDir = os.path.join(srcPath, name)
