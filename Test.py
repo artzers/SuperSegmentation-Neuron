@@ -58,8 +58,9 @@ torch.set_grad_enabled(False)
 torch.cuda.empty_cache()
 
 for dirName in dirList:
-    readPath = os.path.join(root,'%s.tif'%dirName)
-    savePath = os.path.join(root,'%s_srs.tif'%dirName)
+    name = dirName[:-4]
+    readPath = os.path.join(root,'%s.tif'%name)
+    savePath = os.path.join(root,'%s_srs.tif'%name)
 
     img = tifffile.imread(readPath)
 
