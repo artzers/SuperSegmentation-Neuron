@@ -37,5 +37,7 @@ Other python packages:
 
 (3) Change the parameter “lowMeanVal” and “lowStdVal” to the mean and standard variance values of the test images.
 
-(4) Run test.py. 
+(4) Input the PTH file path of the codes "pretrained_net.load_state_dict(torch.load([where your pth file is],map_location='cuda:0'))". The PTH file is the python network parameter file. You can download an example PTH file from https://github.com/artzers/SuperSegmentation-Neuron/releases/tag/1.0.0. 
+
+(5) Run test.py. 
 
